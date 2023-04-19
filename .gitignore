@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Node modules
+node_modules/
+
+# JetBrains IDE
+.idea/
+
+# Catboost
+**/catboost_info/
