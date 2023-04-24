@@ -1,0 +1,10 @@
+{
+  "*.py": [
+    "poetry run isort",
+    "poetry run black"
+  ],
+  "*.ipynb": [
+    "poetry run nbqa isort --float-to-top",
+    "poetry run black"
+  ]
+}
