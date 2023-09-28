@@ -1,3 +1,5 @@
+target = "outcome"
+
 quanti_var = [
     'hospital_number',
     'rectal_temp',
