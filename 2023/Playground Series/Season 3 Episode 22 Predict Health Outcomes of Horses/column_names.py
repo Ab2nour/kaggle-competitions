@@ -1,7 +1,8 @@
 target = "outcome"
+id_col = "id"
 
 quanti_var = [
-    'hospital_number',
+    # 'hospital_number',
     'rectal_temp',
     'pulse',
     'respiratory_rate',
@@ -10,8 +11,8 @@ quanti_var = [
     'total_protein',
     'abdomo_protein',
     'lesion_1',
-    'lesion_2',
-    'lesion_3',
+    # 'lesion_2',
+    # 'lesion_3',
 ]
 
 quali_var = [
