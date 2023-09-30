@@ -1,16 +1,19 @@
 import numpy as np
 import pandas as pd
 from catboost import CatBoostClassifier
-from column_names import target
+from column_names import quali_var_binary, quali_var_for_ohe, quanti_var, target
 from lightgbm import LGBMClassifier
-from sklearn.base import BaseEstimator, ClassifierMixin, TransformerMixin
+from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.compose import ColumnTransformer
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.dummy import DummyClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
 from sklearn.svm import LinearSVC
 from xgboost import XGBClassifier
 
@@ -86,7 +89,56 @@ def make_prediction(
         X_preprocessor.transform(X_kaggle),
         columns=X_preprocessor.get_feature_names_out(),
     )
-
-    y_pred = y_preprocessor.inverse_transform(model.predict(X_kaggle_processed))
+    raw_predictions = model.predict(X_kaggle_processed)
+    y_pred = y_preprocessor.inverse_transform(raw_predictions)
 
     return pd.DataFrame(y_pred, index=X_kaggle.index, columns=[target])
+
+
+def create_x_pipeline():
+    """todo"""
+    quanti_processor = Pipeline(
+        steps=[
+            ("imputer", SimpleImputer()),
+            ("scaler", StandardScaler()),
+        ]
+    )
+
+    quali_ohe_processor = Pipeline(
+        steps=[
+            ("imputer", SimpleImputer(strategy="most_frequent")),
+            (
+                "ohe_encoder",
+                OneHotEncoder(
+                    handle_unknown="infrequent_if_exist", sparse_output=False
+                ),
+            ),
+        ]
+    )
+
+    quali_binary_processor = Pipeline(
+        steps=[
+            ("imputer", SimpleImputer(strategy="most_frequent")),
+            (
+                "encoder",
+                OrdinalEncoder(
+                    handle_unknown="use_encoded_value", unknown_value=np.nan
+                ),
+            ),
+        ]
+    )
+
+    preprocessor = ColumnTransformer(
+        remainder="passthrough",
+        transformers=[
+            (
+                "quali_ohe",
+                quali_ohe_processor,
+                quali_var_for_ohe,
+            ),
+            ("quali_non_ohe", quali_binary_processor, quali_var_binary),
+            ("quanti_processor", quanti_processor, quanti_var),
+        ],
+    )
+
+    return preprocessor
