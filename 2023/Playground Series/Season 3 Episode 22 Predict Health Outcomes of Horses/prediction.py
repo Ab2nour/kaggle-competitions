@@ -68,8 +68,6 @@ def evaluate_models(
             ]
         )
 
-    print(sorted(results, key=lambda x: x[1], reverse=True))
-
     return results
 
 
