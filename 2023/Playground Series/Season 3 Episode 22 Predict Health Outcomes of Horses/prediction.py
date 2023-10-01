@@ -13,7 +13,12 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
+from sklearn.preprocessing import (
+    FunctionTransformer,
+    OneHotEncoder,
+    OrdinalEncoder,
+    StandardScaler,
+)
 from sklearn.svm import LinearSVC
 from xgboost import XGBClassifier
 
@@ -87,7 +92,7 @@ def make_prediction(
 
     X_kaggle_processed = pd.DataFrame(
         X_preprocessor.transform(X_kaggle),
-        columns=X_preprocessor.get_feature_names_out(),
+        # columns=X_preprocessor.get_feature_names_out(), #fixme: redo this line
     )
     raw_predictions = model.predict(X_kaggle_processed)
     y_pred = y_preprocessor.inverse_transform(raw_predictions)
@@ -95,8 +100,16 @@ def make_prediction(
     return pd.DataFrame(y_pred, index=X_kaggle.index, columns=[target])
 
 
+def add_features(df: pd.DataFrame) -> pd.DataFrame:
+    df["deviation_from_normal_temp"] = abs(df["rectal_temp"] - 37.8)
+    df["is_generated"] = int(df.shape[0] == 299)  # fixme: HARDCODED NUMBER
+    return df
+
+
 def create_x_pipeline():
     """todo"""
+    add_features_transformer = FunctionTransformer(add_features)
+
     quanti_processor = Pipeline(
         steps=[
             ("imputer", SimpleImputer()),
@@ -128,7 +141,7 @@ def create_x_pipeline():
         ]
     )
 
-    preprocessor = ColumnTransformer(
+    column_transformer = ColumnTransformer(
         remainder="passthrough",
         transformers=[
             (
@@ -139,6 +152,13 @@ def create_x_pipeline():
             ("quali_non_ohe", quali_binary_processor, quali_var_binary),
             ("quanti_processor", quanti_processor, quanti_var),
         ],
+    )
+
+    preprocessor = Pipeline(
+        steps=[
+            ("add_features", add_features_transformer),
+            ("column_transformer", column_transformer),
+        ]
     )
 
     return preprocessor
