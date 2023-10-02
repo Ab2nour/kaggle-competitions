@@ -15,6 +15,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import (
     FunctionTransformer,
+    LabelEncoder,
     OneHotEncoder,
     OrdinalEncoder,
     StandardScaler,
@@ -160,5 +161,12 @@ def create_x_pipeline():
             ("column_transformer", column_transformer),
         ]
     )
+
+    return preprocessor
+
+
+def create_y_pipeline():
+    """todo"""
+    preprocessor = LabelEncoder()
 
     return preprocessor
