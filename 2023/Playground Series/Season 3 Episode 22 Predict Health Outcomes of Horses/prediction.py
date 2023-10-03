@@ -101,6 +101,15 @@ def make_prediction(
     return pd.DataFrame(y_pred, index=X_kaggle.index, columns=[target])
 
 
+def add_original_data(
+    X: np.ndarray, y: np.ndarray, X_original: np.ndarray, y_original: np.ndarray
+) -> tuple[np.ndarray, np.ndarray]:
+    X_with_original = np.vstack((X, X_original))
+    y_with_original = np.hstack((y, y_original))
+
+    return X_with_original, y_with_original
+
+
 def add_features(df: pd.DataFrame) -> pd.DataFrame:
     df["deviation_from_normal_temp"] = abs(df["rectal_temp"] - 37.8)
     df["is_generated"] = int(df.shape[0] == 299)  # fixme: HARDCODED NUMBER
