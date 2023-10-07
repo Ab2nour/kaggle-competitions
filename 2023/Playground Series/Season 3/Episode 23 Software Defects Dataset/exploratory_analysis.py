@@ -1,6 +1,6 @@
 import pandas as pd
-from matplotlib import pyplot as plt
 import seaborn as sns
+from matplotlib import pyplot as plt
 
 
 def plot_correlation_matrix(df_quanti: pd.DataFrame, threshold: float = 0.5) -> None:
@@ -47,3 +47,23 @@ def plot_na_quanti(df_quanti: pd.DataFrame) -> None:
     plt.show()
 
     print(df_na_sum)
+
+
+def plot_distributions_quanti(df_quanti: pd.DataFrame) -> None:
+    for var in df_quanti.columns:
+        _, ax = plt.subplots(1, 2, figsize=(8, 2))
+
+        sns.boxplot(x=df_quanti[var], width=0.25, ax=ax[0])
+        sns.histplot(df_quanti[var], kde=True, ax=ax[1])
+
+        plt.show()
+
+
+def plot_distributions_quali(df_quali: pd.DataFrame) -> None:
+    for var in df_quali.columns:
+        if df_quali[var].nunique() > 3:
+            sns.histplot(y=df_quali[var])
+        else:
+            plt.figure(figsize=(4, 2))
+            sns.histplot(df_quali[var], shrink=0.3)
+    plt.show()
