@@ -1,17 +1,10 @@
 import numpy as np
 import pandas as pd
-from catboost import CatBoostClassifier
 from column_names import quali_var_binary, quali_var_for_ohe, quanti_var, target
-from lightgbm import LGBMClassifier
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.compose import ColumnTransformer
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.dummy import DummyClassifier
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
-from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import (
     FunctionTransformer,
@@ -20,8 +13,6 @@ from sklearn.preprocessing import (
     OrdinalEncoder,
     StandardScaler,
 )
-from sklearn.svm import LinearSVC
-from xgboost import XGBClassifier
 
 
 def evaluate_models(
