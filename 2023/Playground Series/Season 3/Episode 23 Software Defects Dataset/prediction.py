@@ -3,7 +3,7 @@ import pandas as pd
 from column_names import quali_var_binary, quali_var_for_ohe, quanti_var, target
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.compose import ColumnTransformer
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_score, cross_validate
 
 
 def evaluate_models(
@@ -11,6 +11,8 @@ def evaluate_models(
     prefix: str,
     X_train: pd.DataFrame | np.ndarray,
     y_train: pd.DataFrame | np.ndarray,
+    nb_cv: int = 10,
+    scoring: str = "roc_auc",
 ) -> list[list[str]]:
     """Evalue tous les modèles dans `models` et sauvegarde les résultats avec un préfixe `prefix`
     (utile pour distinguer les différentes stratégies de pré-traitement des données)."""
@@ -20,22 +22,30 @@ def evaluate_models(
         name = f"{prefix}/{model_name}"
         print(name)
 
-        scores = cross_val_score(
+        scores = cross_validate(
             model,
             X_train,
             y_train,
-            cv=10,
-            scoring="roc_auc",
+            cv=nb_cv,
+            scoring=scoring,
+            n_jobs=-1,
         )
 
-        scores_mean = scores.mean()
-        scores_std = scores.std()
+        scores_mean = scores["test_score"].mean()
+        scores_median = np.median(scores["test_score"])
+        scores_std = scores["test_score"].std()
+        scores_min = scores["test_score"].min()
+
+        scores_time = scores["fit_time"].sum() / nb_cv
 
         results.append(
             [
                 name,
                 scores_mean,
+                scores_median,
                 scores_std,
+                scores_min,
+                scores_time,
             ]
         )
 
