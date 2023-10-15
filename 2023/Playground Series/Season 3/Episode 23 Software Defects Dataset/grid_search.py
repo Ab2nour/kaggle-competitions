@@ -34,6 +34,6 @@ def gs_xgboost(x_train, y_train):
         "colsample_bytree": [0.3, 0.7],
     }
 
-    kfold = StratifiedKFold(shuffle=True, random_state=0)
+    kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=0)
 
     gs(x_train, y_train, model, model_params, kfold)
