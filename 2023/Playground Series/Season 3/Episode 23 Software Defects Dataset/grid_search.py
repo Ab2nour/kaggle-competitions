@@ -1,5 +1,7 @@
 import pandas as pd
 import xgboost
+from config import seed
+from cv_strategy import create_cv_strategy
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
 grid_search_folder = "data/results/hyper-parameter-tuning/grid-search"
@@ -34,6 +36,6 @@ def gs_xgboost(x_train, y_train):
         "colsample_bytree": [0.3, 0.7],
     }
 
-    kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=0)
+    kfold = create_cv_strategy(seed)
 
     gs(x_train, y_train, model, model_params, kfold)

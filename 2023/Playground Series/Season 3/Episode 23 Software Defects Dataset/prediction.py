@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 from column_names import quali_var_binary, quali_var_for_ohe, quanti_var, target
+from config import seed
+from cv_strategy import create_cv_strategy
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import cross_val_score, cross_validate
@@ -18,6 +20,8 @@ def evaluate_models(
     (utile pour distinguer les différentes stratégies de pré-traitement des données)."""
     results = []
 
+    kfold = create_cv_strategy(seed, nb_cv)
+
     for model_name, model in models.items():
         name = f"{prefix}/{model_name}"
         print(name)
@@ -26,7 +30,7 @@ def evaluate_models(
             model,
             X_train,
             y_train,
-            cv=nb_cv,
+            cv=kfold,
             scoring=scoring,
             n_jobs=-1,
         )
