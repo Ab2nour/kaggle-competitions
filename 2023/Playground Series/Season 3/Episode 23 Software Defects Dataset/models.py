@@ -31,7 +31,7 @@ def create_models(seed: int) -> dict[str, BaseEstimator]:
         "HistGradientBoostingClassifier": HistGradientBoostingClassifier(
             random_state=seed
         ),
-        "XGBClassifier": XGBClassifier(random_state=seed),
+        "XGBClassifier": XGBClassifier(n_jobs=-1, random_state=seed),
         "CatBoostClassifier": CatBoostClassifier(random_state=seed, verbose=False),
         "LGBMClassifier": LGBMClassifier(random_state=seed),
     }
