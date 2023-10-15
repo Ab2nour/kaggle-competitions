@@ -2,6 +2,8 @@ import pandas as pd
 import xgboost
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
+grid_search_folder = "data/results/hyper-parameter-tuning/grid-search"
+
 
 def gs(x_train, y_train, model, model_params, cv, scoring: str = "roc_auc"):
     model_name = model.__class__.__name__
@@ -19,9 +21,7 @@ def gs(x_train, y_train, model, model_params, cv, scoring: str = "roc_auc"):
 
     results = pd.DataFrame(clf.cv_results_)
 
-    results.to_csv(
-        f"data/hyper-parameter-tuning/grid-search/{model_name}.csv", index=False
-    )
+    results.to_csv(f"{grid_search_folder}/{model_name}.csv", index=False)
 
 
 def gs_xgboost(x_train, y_train):
