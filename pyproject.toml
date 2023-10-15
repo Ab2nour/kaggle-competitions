@@ -6,25 +6,25 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
-black = {extras = ["jupyter"], version = "^22.12.0"}
+black = "^23.9.1"
 jupyter = "^1.0.0"
-numpy = "^1.23.0"
+numpy = "^1.26.1"
 pandas = "^1.5.3"
 matplotlib = "^3.6.3"
-seaborn = "^0.12.2"
+seaborn = "^0.13.0"
 scikit-learn = "^1.2.1"
 nbdev = "^2.3.12"
 statsmodels = "^0.13.5"
 mlxtend = "^0.21.0"
-xgboost = "^1.7.4"
-prince = "^0.10.3"
+xgboost = "^2.0.0"
+prince = "^0.13.0"
 tensorflow = "^2.12.0"
 keras = "^2.12.0"
 nbqa = "^1.7.0"
 isort = "^5.12.0"
-imbalanced-learn = "^0.10.1"
+imbalanced-learn = "^0.11.0"
 catboost = "^1.1.1"
-lightgbm = "^3.3.5"
+lightgbm = "^4.1.0"
 optuna = "^3.1.1"
 
 [tool.poetry.dev-dependencies]
