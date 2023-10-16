@@ -71,7 +71,7 @@ def make_prediction(
         X_preprocessor.transform(X_kaggle),
         # columns=X_preprocessor.get_feature_names_out(), #fixme: redo this line
     )
-    raw_predictions = model.predict(X_kaggle_processed)
-    y_pred = y_preprocessor.inverse_transform(raw_predictions)
+    raw_predictions = model.predict_proba(X_kaggle_processed)[:, 1]
+    # y_pred = y_preprocessor.inverse_transform(raw_predictions)
 
-    return pd.DataFrame(y_pred, index=X_kaggle.index, columns=[target])
+    return pd.DataFrame(raw_predictions, index=X_kaggle.index, columns=[target])
