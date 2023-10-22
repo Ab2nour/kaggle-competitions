@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pandas as pd
 import xgboost
 from config import seed
@@ -20,10 +22,10 @@ def gs(x_train, y_train, model, model_params, cv, scoring: str = "roc_auc"):
     )
 
     clf.fit(x_train, y_train)
-
     results = pd.DataFrame(clf.cv_results_)
 
-    results.to_csv(f"{grid_search_folder}/{model_name}.csv", index=False)
+    date = str(datetime.now())
+    results.to_csv(f"{grid_search_folder}/{model_name}-{date}.csv", index=False)
 
 
 def gs_xgboost(x_train, y_train):
