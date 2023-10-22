@@ -9,14 +9,22 @@ from sklearn.model_selection import GridSearchCV, StratifiedKFold
 grid_search_folder = "data/results/hyper-parameter-tuning/grid-search"
 
 
-def gs(x_train, y_train, model, model_params, cv, scoring: str = "roc_auc"):
+def gs(
+    x_train,
+    y_train,
+    model,
+    model_params: dict,
+    cv,
+    scoring: str = "roc_auc",
+    n_jobs: int = -2,
+):
     model_name = model.__class__.__name__
 
     clf = GridSearchCV(
         estimator=model,
         param_grid=model_params,
         scoring=scoring,
-        n_jobs=-1,
+        n_jobs=n_jobs,
         verbose=1,
         cv=cv,
     )
@@ -29,7 +37,7 @@ def gs(x_train, y_train, model, model_params, cv, scoring: str = "roc_auc"):
 
 
 def gs_xgboost(x_train, y_train):
-    model = xgboost.XGBClassifier(n_jobs=-1, random_state=0)
+    model = xgboost.XGBClassifier(n_jobs=-2, random_state=0)
 
     model_params = {
         "max_depth": [3, 6, 10],
