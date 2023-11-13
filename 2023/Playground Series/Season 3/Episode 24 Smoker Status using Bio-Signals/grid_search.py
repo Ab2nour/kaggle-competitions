@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pandas as pd
 import xgboost
-from config import seed
+from config import n_jobs, seed
 from cv_strategy import create_cv_strategy
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
@@ -16,7 +16,7 @@ def gs(
     model_params: dict,
     cv,
     scoring: str = "roc_auc",
-    n_jobs: int = -2,
+    n_jobs: int = n_jobs,
 ):
     model_name = model.__class__.__name__
 
@@ -37,7 +37,7 @@ def gs(
 
 
 def gs_xgboost(x_train, y_train):
-    model = xgboost.XGBClassifier(n_jobs=-2, random_state=0)
+    model = xgboost.XGBClassifier(n_jobs=n_jobs, random_state=0)
 
     model_params = {
         "max_depth": [3, 6, 10],

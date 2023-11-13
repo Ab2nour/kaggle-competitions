@@ -1,4 +1,5 @@
 from catboost import CatBoostClassifier
+from config import n_jobs
 from lightgbm import LGBMClassifier
 from sklearn.base import BaseEstimator
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
@@ -31,7 +32,7 @@ def create_models(seed: int) -> dict[str, BaseEstimator]:
         "HistGradientBoostingClassifier": HistGradientBoostingClassifier(
             random_state=seed
         ),
-        "XGBClassifier": XGBClassifier(n_jobs=-1, random_state=seed),
-        "CatBoostClassifier": CatBoostClassifier(random_state=seed, verbose=False),
-        "LGBMClassifier": LGBMClassifier(random_state=seed),
+        "XGBClassifier": XGBClassifier(n_jobs=n_jobs, random_state=seed),
+        # "CatBoostClassifier": CatBoostClassifier(random_state=seed, verbose=False),
+        "LGBMClassifier": LGBMClassifier(n_jobs=n_jobs, random_state=seed),
     }
