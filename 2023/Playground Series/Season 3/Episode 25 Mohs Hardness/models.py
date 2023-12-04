@@ -11,7 +11,7 @@ from sklearn.ensemble import (
 )
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
-#from xgboost import XGBRegressor
+from xgboost import XGBRegressor
 
 
 def create_models(seed: int) -> dict[str, BaseEstimator]:
@@ -25,7 +25,7 @@ def create_models(seed: int) -> dict[str, BaseEstimator]:
         "HistGradientBoostingRegressor": HistGradientBoostingRegressor(
             random_state=seed
         ),
-        #"XGBRegressor": XGBRegressor(n_jobs=n_jobs, random_state=seed),
-        # "CatBoostRegressor": CatBoostRegressor(random_state=seed, verbose=False),
-        "LGBMRegressor": LGBMRegressor(n_jobs=n_jobs, random_state=seed, verbose=False),
+        "XGBRegressor": XGBRegressor(n_jobs=n_jobs, random_state=seed),
+        "CatBoostRegressor": CatBoostRegressor(random_state=seed, verbose=False),
+        "LGBMRegressor": LGBMRegressor(n_jobs=n_jobs, random_state=seed, verbose=0),
     }
