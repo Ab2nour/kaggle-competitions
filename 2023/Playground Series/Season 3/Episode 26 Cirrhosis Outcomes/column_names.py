@@ -1,4 +1,5 @@
 target = "Status"
+multi_output_columns = ("Status_C", "Status_CL", "Status_D")
 id_col = "id"
 
 quanti_var = [
@@ -25,6 +26,15 @@ quali_var = [
     "Stage",
 ]
 
-quali_var_binary = []
+quali_var_binary = [
+    "Sex",
+    "Ascites",
+    "Hepatomegaly",
+    "Spiders",
+    "Edema",
+]
 
-quali_var_for_ohe = []
+quali_var_for_ohe = [
+    "Drug",
+    "Stage",
+]

@@ -20,12 +20,14 @@ def create_models(seed: int) -> dict[str, BaseEstimator]:
         # "KNeighborsRegressor5": KNeighborsRegressor(),
         # "LinearSVC": LinearSVC(random_state=seed),
         "LinearRegression": LinearRegression(),
-        "RandomForestRegressor": RandomForestRegressor(random_state=seed),
-        "ExtraTreesRegressor": ExtraTreesRegressor(random_state=seed),
+        "RandomForestRegressor": RandomForestRegressor(
+            n_jobs=n_jobs, random_state=seed
+        ),
+        "ExtraTreesRegressor": ExtraTreesRegressor(n_jobs=n_jobs, random_state=seed),
         "HistGradientBoostingRegressor": HistGradientBoostingRegressor(
             random_state=seed
         ),
         "XGBRegressor": XGBRegressor(n_jobs=n_jobs, random_state=seed),
-        "CatBoostRegressor": CatBoostRegressor(random_state=seed, verbose=False),
+        # "CatBoostRegressor": CatBoostRegressor(random_state=seed, verbose=False),
         "LGBMRegressor": LGBMRegressor(n_jobs=n_jobs, random_state=seed, verbose=0),
     }

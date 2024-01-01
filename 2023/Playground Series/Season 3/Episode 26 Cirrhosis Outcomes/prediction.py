@@ -1,8 +1,15 @@
 import numpy as np
 import pandas as pd
-from column_names import quali_var_binary, quali_var_for_ohe, quanti_var, target
-from config import seed
+from column_names import (
+    multi_output_columns,
+    quali_var_binary,
+    quali_var_for_ohe,
+    quanti_var,
+    target,
+)
+from config import multi_output, seed
 from cv_strategy import create_cv_strategy
+from metric import metric
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import cross_val_score, cross_validate
@@ -14,7 +21,7 @@ def evaluate_models(
     X_train: pd.DataFrame | np.ndarray,
     y_train: pd.DataFrame | np.ndarray,
     nb_cv: int = 10,
-    scoring: str = "roc_auc",
+    scoring: str = metric,
 ) -> list[list[str]]:
     """Evalue tous les modèles dans `models` et sauvegarde les résultats avec un préfixe `prefix`
     (utile pour distinguer les différentes stratégies de pré-traitement des données)."""
@@ -71,7 +78,19 @@ def make_prediction(
         X_preprocessor.transform(X_kaggle),
         # columns=X_preprocessor.get_feature_names_out(), #fixme: redo this line
     )
-    raw_predictions = model.predict_proba(X_kaggle_processed)[:, 1]
+
+    if multi_output:
+        raw_predictions = model.predict_proba(X_kaggle_processed)
+    else:
+        raw_predictions = model.predict_proba(X_kaggle_processed)[:, 1]
+
     # y_pred = y_preprocessor.inverse_transform(raw_predictions)
 
-    return pd.DataFrame(raw_predictions, index=X_kaggle.index, columns=[target])
+    if multi_output:
+        df = pd.DataFrame(
+            raw_predictions, index=X_kaggle.index, columns=[multi_output_columns]
+        )
+    else:
+        df = pd.DataFrame(raw_predictions, index=X_kaggle.index, columns=[target])
+
+    return df

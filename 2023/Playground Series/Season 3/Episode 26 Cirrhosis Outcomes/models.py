@@ -27,12 +27,14 @@ def create_models(seed: int) -> dict[str, BaseEstimator]:
         # "LinearSVC": LinearSVC(random_state=seed),
         "LogisticRegression": LogisticRegression(random_state=seed),
         "LinearDiscriminantAnalysis": LinearDiscriminantAnalysis(),
-        "RandomForestClassifier": RandomForestClassifier(random_state=seed),
-        "ExtraTreesClassifier": ExtraTreesClassifier(random_state=seed),
+        "RandomForestClassifier": RandomForestClassifier(
+            n_jobs=n_jobs, random_state=seed
+        ),
+        "ExtraTreesClassifier": ExtraTreesClassifier(n_jobs=n_jobs, random_state=seed),
         "HistGradientBoostingClassifier": HistGradientBoostingClassifier(
             random_state=seed
         ),
         "XGBClassifier": XGBClassifier(n_jobs=n_jobs, random_state=seed),
         # "CatBoostClassifier": CatBoostClassifier(random_state=seed, verbose=False),
-        "LGBMClassifier": LGBMClassifier(n_jobs=n_jobs, random_state=seed),
+        # "LGBMClassifier": LGBMClassifier(n_jobs=n_jobs, random_state=seed),
     }
