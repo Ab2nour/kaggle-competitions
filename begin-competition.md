@@ -12,3 +12,7 @@ Plot `df.head()`:
 - note which variables are obviously qualitative 
 
 Update `column_names.py` accordingly.
+
+# Prediction
+
+Open `prediction.ipynb`.
