@@ -8,11 +8,26 @@ dependencies = [
     "catboost>=1.2.7",
     "imbalanced-learn>=0.13.0",
     "jupyter>=1.1.1",
+    "keras>=3.10.0",
     "lightgbm>=4.6.0",
     "matplotlib>=3.10.1",
     "numpy>=1.26.4",
     "pandas>=2.2.3",
     "scikit-learn>=1.6.1",
     "seaborn>=0.13.2",
+    "torch>=2.7.1",
     "xgboost>=3.0.0",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu" },
+]
+torchvision = [
+  { index = "pytorch-cpu" },
 ]
